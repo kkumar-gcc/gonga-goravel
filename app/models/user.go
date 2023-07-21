@@ -1,8 +1,11 @@
 package models
 
 import (
+	"github.com/goravel/framework/contracts/database/factory"
 	"github.com/goravel/framework/database/orm"
 	"github.com/goravel/framework/support/carbon"
+
+	"goravel/database/factories"
 )
 
 type User struct {
@@ -30,4 +33,8 @@ type User struct {
 	Education          string           `json:"education"`
 	EmailVerified      bool             `json:"email_verified"`
 	orm.SoftDeletes
+}
+
+func (u *User) Factory() factory.Factory {
+	return &factories.UserFactory{}
 }

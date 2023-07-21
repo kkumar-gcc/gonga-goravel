@@ -1,7 +1,10 @@
 package models
 
 import (
+	"github.com/goravel/framework/contracts/database/factory"
 	"github.com/goravel/framework/database/orm"
+
+	"goravel/database/factories"
 )
 
 type Tag struct {
@@ -16,4 +19,8 @@ type Tag struct {
 	User         User    `json:"user" gorm:"foreignKey:UserID"`
 	Posts        []*Post `json:"posts" gorm:"many2many:post_hashtags;"`
 	orm.SoftDeletes
+}
+
+func (t *Tag) Factory() factory.Factory {
+	return &factories.TagFactory{}
 }

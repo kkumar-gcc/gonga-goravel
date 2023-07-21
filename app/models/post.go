@@ -1,8 +1,11 @@
 package models
 
 import (
+	"github.com/goravel/framework/contracts/database/factory"
 	"github.com/goravel/framework/database/orm"
 	"github.com/goravel/framework/support/carbon"
+
+	"goravel/database/factories"
 )
 
 type Visibility string
@@ -35,4 +38,8 @@ type Post struct {
 	FeaturedExpiry  carbon.DateTime `json:"featured_expiry"`
 	Visibility      Visibility      `json:"visibility"`
 	orm.SoftDeletes
+}
+
+func (p *Post) Factory() factory.Factory {
+	return &factories.PostFactory{}
 }

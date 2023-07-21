@@ -1,7 +1,10 @@
 package models
 
 import (
+	"github.com/goravel/framework/contracts/database/factory"
 	"github.com/goravel/framework/database/orm"
+
+	"goravel/database/factories"
 )
 
 type Comment struct {
@@ -17,4 +20,8 @@ type Comment struct {
 	Children []*Comment `json:"children,omitempty" gorm:"foreignKey:ParentID"`
 	Mentions []*Mention `json:"mentions" gorm:"polymorphic:Owner;"`
 	orm.SoftDeletes
+}
+
+func (c *Comment) Factory() factory.Factory {
+	return &factories.CommentFactory{}
 }
