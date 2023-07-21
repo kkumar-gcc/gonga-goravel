@@ -22,3 +22,12 @@ func (r *UserController) Show(ctx http.Context) {
 		"Hello": "Goravel",
 	})
 }
+
+func (r *UserController) Create(ctx http.Context) {
+}
+
+func (r *UserController) Update(ctx http.Context) {
+}
+
+func (r *UserController) Delete(ctx http.Context) {
+}

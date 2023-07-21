@@ -16,3 +16,6 @@ func NewRegisterController() *RegisterController {
 
 func (r *RegisterController) Index(ctx http.Context) {
 }
+
+func (r *RegisterController) Create(ctx http.Context) {
+}

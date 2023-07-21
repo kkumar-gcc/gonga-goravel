@@ -16,3 +16,15 @@ func NewCommentController() *CommentController {
 
 func (r *CommentController) Index(ctx http.Context) {
 }
+
+func (r *CommentController) Show(ctx http.Context) {
+}
+
+func (r *CommentController) Create(ctx http.Context) {
+}
+
+func (r *CommentController) Update(ctx http.Context) {
+}
+
+func (r *CommentController) Delete(ctx http.Context) {
+}

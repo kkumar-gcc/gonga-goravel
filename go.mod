@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/goravel/framework v1.12.5
+	github.com/swaggo/http-swagger v1.3.4
 	google.golang.org/grpc v1.56.1
 )
 
@@ -19,6 +20,7 @@ require (
 	github.com/Azure/go-autorest/autorest/date v0.3.0 // indirect
 	github.com/Azure/go-autorest/logger v0.2.1 // indirect
 	github.com/Azure/go-autorest/tracing v0.6.0 // indirect
+	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
 	github.com/RichardKnop/logging v0.0.0-20190827224416-1a693bdd4fae // indirect
@@ -43,6 +45,10 @@ require (
 	github.com/gin-gonic/gin v1.9.1 // indirect
 	github.com/glebarez/go-sqlite v1.21.1 // indirect
 	github.com/glebarez/sqlite v1.8.0 // indirect
+	github.com/go-openapi/jsonpointer v0.19.5 // indirect
+	github.com/go-openapi/jsonreference v0.20.0 // indirect
+	github.com/go-openapi/spec v0.20.6 // indirect
+	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.0 // indirect
@@ -86,6 +92,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible // indirect
+	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0 // indirect
 	github.com/klauspost/compress v1.16.6 // indirect
@@ -94,6 +101,7 @@ require (
 	github.com/lestrrat-go/strftime v1.0.5 // indirect
 	github.com/lib/pq v1.10.2 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
+	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/microsoft/go-mssqldb v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -124,6 +132,8 @@ require (
 	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
+	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe // indirect
+	github.com/swaggo/swag v1.8.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/unrolled/secure v1.13.0 // indirect

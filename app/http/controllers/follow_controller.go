@@ -16,3 +16,6 @@ func NewFollowController() *FollowController {
 
 func (r *FollowController) Index(ctx http.Context) {
 }
+
+func (r *FollowController) Create(ctx http.Context) {
+}

@@ -16,3 +16,9 @@ func NewLoginController() *LoginController {
 
 func (r *LoginController) Index(ctx http.Context) {
 }
+
+func (r *LoginController) Create(ctx http.Context) {
+}
+
+func (r *LoginController) Delete(ctx http.Context) {
+}

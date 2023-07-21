@@ -16,3 +16,6 @@ func NewPasswordResetLinkController() *PasswordResetLinkController {
 
 func (r *PasswordResetLinkController) Index(ctx http.Context) {
 }
+
+func (r *PasswordResetLinkController) Create(ctx http.Context) {
+}

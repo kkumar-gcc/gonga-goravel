@@ -16,3 +16,6 @@ func NewNewPasswordController() *NewPasswordController {
 
 func (r *NewPasswordController) Index(ctx http.Context) {
 }
+
+func (r *NewPasswordController) Create(ctx http.Context) {
+}

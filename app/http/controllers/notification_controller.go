@@ -16,3 +16,9 @@ func NewNotificationController() *NotificationController {
 
 func (r *NotificationController) Index(ctx http.Context) {
 }
+
+func (r *NotificationController) ReadAll(ctx http.Context) {
+}
+
+func (r *NotificationController) Update(ctx http.Context) {
+}

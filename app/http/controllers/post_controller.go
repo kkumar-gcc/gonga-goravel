@@ -16,3 +16,30 @@ func NewPostController() *PostController {
 
 func (r *PostController) Index(ctx http.Context) {
 }
+
+func (r *PostController) Show(ctx http.Context) {
+}
+
+func (r *PostController) Create(ctx http.Context) {
+}
+
+func (r *PostController) Update(ctx http.Context) {
+}
+
+func (r *PostController) UpdateTitle(ctx http.Context) {
+}
+
+func (r *PostController) UpdateBody(ctx http.Context) {
+}
+
+func (r *PostController) UpdateMedia(ctx http.Context) {
+}
+
+func (r *PostController) UpdateHashtag(ctx http.Context) {
+}
+
+func (r *PostController) UpdatePostSettings(ctx http.Context) {
+}
+
+func (r *PostController) Delete(ctx http.Context) {
+}
