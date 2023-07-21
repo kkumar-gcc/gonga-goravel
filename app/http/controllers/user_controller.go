@@ -14,6 +14,9 @@ func NewUserController() *UserController {
 	}
 }
 
+func (r *UserController) Index(ctx http.Context) {
+}
+
 func (r *UserController) Show(ctx http.Context) {
 	ctx.Response().Success().Json(http.Json{
 		"Hello": "Goravel",
