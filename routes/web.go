@@ -16,4 +16,12 @@ func Web() {
 
 	userController := controllers.NewUserController()
 	facades.Route().Get("/users/{id}", userController.Show)
+
+	// ******************************
+	// *    ALERT: DO NOT EDIT!     *
+	// * This area is non-editable. *
+	// ******************************
+
+	// Register Auth Routes
+	Auth()
 }
