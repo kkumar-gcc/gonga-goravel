@@ -14,6 +14,7 @@ func (f *UserFactory) Definition() map[string]any {
 	return map[string]interface{}{
 		"email":         faker.Email(),
 		"password":      faker.Password(true, true, true, true, false, 12),
+		"username":      faker.Username(),
 		"firstName":     faker.FirstName(),
 		"lastName":      faker.LastName(),
 		"avatarUrl":     faker.Person().Image,

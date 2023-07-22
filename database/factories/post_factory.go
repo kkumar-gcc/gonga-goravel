@@ -3,8 +3,6 @@ package factories
 import (
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/goravel/framework/support/carbon"
-
-	"goravel/app/models"
 )
 
 type PostFactory struct {
@@ -25,6 +23,6 @@ func (f *PostFactory) Definition() map[string]any {
 		"promotionExpiry": carbon.Now(),
 		"isFeatured":      false,
 		"featuredExpiry":  carbon.Now(),
-		"visibility":      models.VisibilityPublic,
+		"visibility":      "public",
 	}
 }
