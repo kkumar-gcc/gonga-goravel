@@ -29,12 +29,12 @@ func (r *UpdateUserRequest) Authorize(ctx http.Context) error {
 
 func (r *UpdateUserRequest) Rules(ctx http.Context) map[string]string {
 	return map[string]string{
-		"first_name":  "required,max_len:50",
-		"last_name":   "required,max_len:50",
+		"first_name":  "required|max_len:50",
+		"last_name":   "required|max_len:50",
 		"bio":         "max_len:500",
 		"mobile_no":   "len:10",
-		"country":     "alpha_dash,max_len:50",
-		"city":        "alpha_dash,max_len:50",
+		"country":     "alpha_dash|max_len:50",
+		"city":        "alpha_dash|max_len:50",
 		"birthday":    "date",
 		"website_url": "full_url",
 		"occupation":  "max_len:50",

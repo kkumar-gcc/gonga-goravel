@@ -17,7 +17,7 @@ func (r *UpdateCommentRequest) Authorize(ctx http.Context) error {
 
 func (r *UpdateCommentRequest) Rules(ctx http.Context) map[string]string {
 	return map[string]string{
-		"body":     "required,min_len:40",
+		"body":     "required|min_len:40",
 		"mentions": "max_len:15",
 	}
 }

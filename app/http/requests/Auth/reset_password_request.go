@@ -15,7 +15,7 @@ func (r *ResetPasswordRequest) Authorize(ctx http.Context) error {
 
 func (r *ResetPasswordRequest) Rules(ctx http.Context) map[string]string {
 	return map[string]string{
-		"email": "required,email",
+		"email": "required|email",
 	}
 }
 

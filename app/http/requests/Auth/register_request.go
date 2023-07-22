@@ -17,9 +17,9 @@ func (r *RegisterRequest) Authorize(ctx http.Context) error {
 
 func (r *RegisterRequest) Rules(ctx http.Context) map[string]string {
 	return map[string]string{
-		"username": "required,min_len:3,max_len:20",
-		"password": "required,min_len:8",
-		"email":    "required,email",
+		"username": "required|min_len:3|max_len:20",
+		"password": "required|min_len:8",
+		"email":    "required|email",
 	}
 }
 

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"github.com/goravel/framework/contracts/route"
 	"github.com/goravel/framework/facades"
 	Auth2 "goravel/app/http/controllers/Auth"
 	"goravel/app/http/middleware"
@@ -9,20 +10,34 @@ import (
 func Auth() {
 	router := facades.Route()
 
-	// Login\Logout
-	loginController := Auth2.NewLoginController()
-	router.Post("/login", loginController.Create)
-	router.Middleware(middleware.Auth()).Post("/logout", loginController.Delete)
-
 	// Register
-	registerController := Auth2.NewRegisterController()
-	router.Post("/register", registerController.Create)
+	registeredUserController := Auth2.NewRegisteredUserController()
+	router.Post("/register", registeredUserController.Store)
+
+	// Login
+	authenticatedSessionController := Auth2.NewAuthenticatedSessionController()
+	router.Post("/login", authenticatedSessionController.Store)
 
 	// PasswordReset
 	passwordResetLinkController := Auth2.NewPasswordResetLinkController()
-	router.Post("/forgot-password", passwordResetLinkController.Create)
+	router.Post("/forgot-password", passwordResetLinkController.Store)
 
-	// NewPassword
-	newPasswordController := Auth2.NewNewPasswordController()
-	router.Post("/reset-password", newPasswordController.Create)
+	// Password
+	passwordController := Auth2.NewPasswordController()
+	router.Post("/reset-password", passwordController.Store)
+
+	// AuthenticatedSession
+	router.Middleware(middleware.Auth()).Group(func(route route.Route) {
+		// EmailVerificationNotification
+		emailVerificationNotificationController := Auth2.NewEmailVerificationNotificationController()
+		route.Post("/email/verification-notification", emailVerificationNotificationController.Store)
+
+		// VerifyEmail
+		verifyEmailController := Auth2.NewVerifyEmailController()
+		route.Get("/email-verify/{id}/{hash}", verifyEmailController.Index)
+
+		// AuthenticatedSession
+		authenticatedSessionController := Auth2.NewAuthenticatedSessionController()
+		route.Post("/logout", authenticatedSessionController.Destroy)
+	})
 }

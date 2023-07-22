@@ -26,9 +26,9 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 
 func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
 	return map[string]string{
-		"title":    "required,min_len:20",
-		"body":     "required,min_len:40",
-		"hashtags": "min_len:1,max_len:15",
+		"title":    "required|min_len:20",
+		"body":     "required|min_len:40",
+		"hashtags": "min_len:1|max_len:15",
 		"mentions": "max_len:15",
 		"medias":   "max_len:15",
 	}
