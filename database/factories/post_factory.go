@@ -12,17 +12,17 @@ type PostFactory struct {
 func (f *PostFactory) Definition() map[string]any {
 	faker := gofakeit.New(0)
 	return map[string]interface{}{
-		"title":           faker.Sentence(30),
-		"body":            faker.Paragraph(4, 20, 20, "."),
-		"userID":          0, // Set the appropriate user ID here
-		"likeCount":       0,
-		"commentCount":    0,
-		"viewCount":       0,
-		"shareCount":      0,
-		"isPromoted":      false,
-		"promotionExpiry": carbon.Now(),
-		"isFeatured":      false,
-		"featuredExpiry":  carbon.Now(),
-		"visibility":      "public",
+		"title":              faker.Sentence(30),
+		"body":               faker.Paragraph(4, 20, 20, "."),
+		"userID":             0, // Set the appropriate user ID here
+		"likeCount":          0,
+		"commentCount":       0,
+		"viewCount":          0,
+		"shareCount":         0,
+		"isPromoted":         false,
+		"promotionExpiresAt": carbon.Now(),
+		"isFeatured":         false,
+		"featuredExpiresAt":  carbon.Now(),
+		"visibility":         "public",
 	}
 }
