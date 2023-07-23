@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/goravel/framework/auth"
 	"github.com/goravel/framework/contracts/http"
@@ -14,8 +15,8 @@ import (
 // If the user is authenticated, it calls the next middleware/handler in the chain.
 func Auth() http.Middleware {
 	return func(ctx http.Context) {
-		token := ctx.Request().Header("Authorization", "")
-		if token == "" {
+		token, err := extractToken(ctx)
+		if err != nil {
 			ctx.Request().AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
@@ -46,4 +47,19 @@ func Auth() http.Middleware {
 		ctx.Response().Header("Authorization", token)
 		ctx.Request().Next()
 	}
+}
+
+// extractToken retrieves the token from the Authorization header.
+func extractToken(ctx http.Context) (string, error) {
+	authorizationHeader := ctx.Request().Header("Authorization", "")
+	if authorizationHeader == "" {
+		return "", errors.New("missing authorization header")
+	}
+
+	headerParts := strings.Split(authorizationHeader, " ")
+	if len(headerParts) != 2 || headerParts[0] != "Bearer" {
+		return "", errors.New("invalid or unsupported token type")
+	}
+
+	return headerParts[1], nil
 }

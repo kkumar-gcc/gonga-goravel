@@ -29,7 +29,7 @@ func MarkEmailAsVerified(user models.User) error {
 	user.EmailVerifiedAt = carbon.DateTime{
 		Carbon: carbon.Now(),
 	}
-	if _, err := facades.Orm().Query().Model(&models.User{}).Update(&user); err != nil {
+	if _, err := facades.Orm().Query().Where("id", user.ID).Update(&user); err != nil {
 		return err
 	}
 	return nil
