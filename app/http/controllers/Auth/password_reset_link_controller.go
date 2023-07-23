@@ -33,12 +33,12 @@ func (r *PasswordResetLinkController) Store(ctx http.Context) {
 	email := ctx.Request().Input("email")
 	if err := helpers.SendResetLinkEmail(email); err != nil {
 		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"message": "Unable to send reset link",
+			"message": "unable to send reset link",
 		})
 		return
 	}
 
 	ctx.Response().Json(http.StatusOK, http.Json{
-		"message": "Reset link sent",
+		"message": "reset link sent",
 	})
 }

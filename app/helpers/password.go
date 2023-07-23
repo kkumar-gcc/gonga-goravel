@@ -19,6 +19,7 @@ func SendResetLinkEmail(email string) error {
 	}
 	err = facades.Event().Job(&events.ResetPasswordNotification{}, []event.Arg{
 		{Type: "string", Value: token},
+		{Type: "string", Value: user.Email},
 	}).Dispatch()
 	if err != nil {
 		return err
