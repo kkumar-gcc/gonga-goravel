@@ -1,0 +1,22 @@
+CREATE TABLE posts (
+  id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  created_at datetime(3) NOT NULL,
+  updated_at datetime(3) NOT NULL,
+  user_id bigint(20) unsigned NOT NULL,
+  title varchar(255) NOT NULL,
+  body text NOT NULL,
+  like_count bigint(20) unsigned NOT NULL DEFAULT 0,
+  comment_count bigint(20) unsigned NOT NULL DEFAULT 0,
+  view_count bigint(20) unsigned NOT NULL DEFAULT 0,
+  share_count bigint(20) unsigned NOT NULL DEFAULT 0,
+  is_promoted tinyint(1) NOT NULL DEFAULT 0,
+  promotion_expires_at datetime(3) DEFAULT NULL,
+  is_featured tinyint(1) NOT NULL DEFAULT 0,
+  featured_expires_at datetime(3) DEFAULT NULL,
+  visibility enum('public','unlisted','private') NOT NULL DEFAULT 'public',
+  deleted_at datetime(3) DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY idx_posts_user_id (user_id),
+  KEY idx_posts_created_at (created_at),
+  KEY idx_posts_updated_at (updated_at)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;

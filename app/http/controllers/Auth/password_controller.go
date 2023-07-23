@@ -20,7 +20,6 @@ func (r *PasswordController) Index(ctx http.Context) {
 
 func (r *PasswordController) Store(ctx http.Context) {
 	validator, err := ctx.Request().Validate(map[string]string{
-		"token":    "required",
 		"email":    "required|email",
 		"password": "required|min_len:8|eq_field:password_confirmation",
 	})
@@ -29,6 +28,7 @@ func (r *PasswordController) Store(ctx http.Context) {
 	}
 	if validator.Fails() {
 		ctx.Response().Json(http.StatusUnprocessableEntity, validator.Errors().All())
+		return
 	}
 	if err := helpers.PasswordReset(ctx); err != nil {
 		ctx.Response().Json(http.StatusInternalServerError, http.Json{

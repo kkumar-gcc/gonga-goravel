@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"errors"
 	"github.com/goravel/framework/contracts/event"
 	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/facades"
@@ -63,19 +64,25 @@ func DeleteExisting(user models.User) error {
 }
 
 func PasswordReset(ctx http.Context) error {
-	token := ctx.Request().Input("token")
-	email := ctx.Request().Input("email")
+	token := ctx.Request().Query("token")
+	email := ctx.Request().Query("email")
 	var passwordReset models.PasswordReset
 	err := facades.Orm().Query().Model(&models.PasswordReset{}).Where("email", email).Where("token", token).First(&passwordReset)
 	if err != nil {
 		return err
+	}
+	if passwordReset.ID == 0 {
+		return errors.New("invalid token")
+	}
+	if passwordReset.ExpiresAt.Lt(carbon.Now()) {
+		return errors.New("token expired")
 	}
 	password := ctx.Request().Input("password")
 	hashedPassword, err := facades.Hash().Make(password)
 	if err != nil {
 		return err
 	}
-	_, err = facades.Orm().Query().Where("email", email).Update(map[string]interface{}{
+	_, err = facades.Orm().Query().Model(&models.User{}).Where("email", email).Update(map[string]interface{}{
 		"password": hashedPassword,
 	})
 	if err != nil {
