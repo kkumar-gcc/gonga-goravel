@@ -29,7 +29,7 @@ func Web() {
 		route.Middleware(middleware.Auth()).Delete("/{id}", userController.Delete)
 
 		// Follow
-		router.Middleware(middleware.Auth()).Post("/follow", followController.Create)
+		router.Middleware(middleware.Auth()).Post("/follow", followController.Store)
 	})
 
 	//Comment
@@ -45,7 +45,7 @@ func Web() {
 	router.Prefix("posts").Group(func(route route.Route) {
 		route.Get("/", postController.Index)
 		route.Get("/{id}", postController.Show)
-		route.Middleware(middleware.Auth()).Post("/", postController.Create)
+		route.Middleware(middleware.Auth()).Post("/", postController.Store)
 		route.Middleware(middleware.Auth()).Put("/{id}/title", postController.UpdateTitle)
 		route.Middleware(middleware.Auth()).Put("/{id}/body", postController.UpdateBody)
 		route.Middleware(middleware.Auth()).Put("/{id}/medias", postController.UpdateMedia)
@@ -60,7 +60,7 @@ func Web() {
 
 	// Like
 	likeController := controllers.NewLikeController()
-	router.Middleware(middleware.Auth()).Post("/likes", likeController.Create)
+	router.Middleware(middleware.Auth()).Post("/likes", likeController.Store)
 	router.Middleware(middleware.Auth()).Delete("/likes/{id}", likeController.Delete)
 
 	// Notification

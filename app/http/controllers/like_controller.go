@@ -17,7 +17,7 @@ func NewLikeController() *LikeController {
 func (r *LikeController) Index(ctx http.Context) {
 }
 
-func (r *LikeController) Create(ctx http.Context) {
+func (r *LikeController) Store(ctx http.Context) {
 }
 
 func (r *LikeController) Delete(ctx http.Context) {

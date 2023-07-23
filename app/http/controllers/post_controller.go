@@ -20,7 +20,7 @@ func (r *PostController) Index(ctx http.Context) {
 func (r *PostController) Show(ctx http.Context) {
 }
 
-func (r *PostController) Create(ctx http.Context) {
+func (r *PostController) Store(ctx http.Context) {
 }
 
 func (r *PostController) Update(ctx http.Context) {
