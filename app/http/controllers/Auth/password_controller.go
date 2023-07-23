@@ -2,7 +2,7 @@ package Auth
 
 import (
 	"github.com/goravel/framework/contracts/http"
-	"github.com/goravel/framework/facades"
+	"goravel/app/helpers"
 )
 
 type PasswordController struct {
@@ -22,7 +22,7 @@ func (r *PasswordController) Store(ctx http.Context) {
 	validator, err := ctx.Request().Validate(map[string]string{
 		"token":    "required",
 		"email":    "required|email",
-		"password": "required|min_len:8",
+		"password": "required|min_len:8|eq_field:password_confirmation",
 	})
 	if err != nil {
 		return
@@ -30,20 +30,21 @@ func (r *PasswordController) Store(ctx http.Context) {
 	if validator.Fails() {
 		ctx.Response().Json(http.StatusUnprocessableEntity, validator.Errors().All())
 	}
-	//token := ctx.Request().Query("token")
-	email := ctx.Request().Query("email")
-	password := ctx.Request().Query("password")
-
-	_, err = facades.Orm().Query().Where("email", email).Update(map[string]interface{}{
-		"password": facades.Hash().Make(password),
-	})
+	if err := helpers.PasswordReset(ctx); err != nil {
+		ctx.Response().Json(http.StatusInternalServerError, http.Json{
+			"error": err.Error(),
+		})
+		return
+	}
 	if err != nil {
 		ctx.Response().Json(http.StatusInternalServerError, http.Json{
 			"error": err.Error(),
 		})
 		return
 	}
-
+	ctx.Response().Json(http.StatusOK, http.Json{
+		"message": "password reset successfully",
+	})
 }
 
 func (r *PasswordController) Update(ctx http.Context) {

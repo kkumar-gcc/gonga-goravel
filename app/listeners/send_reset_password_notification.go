@@ -34,12 +34,8 @@ func (receiver *SendResetPasswordNotification) Handle(args ...any) error {
 }
 
 func (receiver *SendResetPasswordNotification) resetUrl(token string, email string) string {
-	url := facades.Config().Env("APP_URL", "http://localhost")
-	port := facades.Config().Env("APP_PORT", "3000")
-	if url != "" && port != "" {
-		return url.(string) + ":" + port.(string) + "/reset-password?token=" + token + "&email=" + email
-	}
-	return ""
+	url := facades.Config().GetString("app.frontend_url", "http://localhost:3000")
+	return url + "/reset-password?token=" + token + "&email=" + email
 }
 
 func (receiver *SendResetPasswordNotification) mailTemplate(token string, email string) string {

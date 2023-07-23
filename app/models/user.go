@@ -31,7 +31,7 @@ type User struct {
 	WebsiteURL         string           `json:"website_url"`
 	Occupation         string           `json:"occupation"`
 	Education          string           `json:"education"`
-	//EmailVerifiedAt    bool             `json:"email_verified_at"`
+	EmailVerifiedAt    carbon.DateTime  `json:"email_verified_at"`
 	orm.SoftDeletes
 }
 
@@ -40,6 +40,8 @@ func (u *User) Factory() factory.Factory {
 }
 
 func (u *User) HasVerifiedEmail() bool {
-	//return u.EmailVerifiedAt
-	return false
+	if u.EmailVerifiedAt.IsZero() {
+		return false
+	}
+	return true
 }

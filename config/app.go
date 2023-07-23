@@ -47,6 +47,9 @@ func init() {
 		// Application Debug Mode
 		"debug": config.Env("APP_DEBUG", false),
 
+		// Application's Frontend URL
+		"frontend_url": config.Env("FRONTEND_URL", "http://localhost:3000"),
+
 		// Application Timezone
 		//
 		// Here you may specify the default timezone for your application.

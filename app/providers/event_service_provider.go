@@ -24,5 +24,8 @@ func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener 
 		&events.ResetPasswordNotification{}: {
 			&listeners.SendResetPasswordNotification{},
 		},
+		&events.EmailVerificationNotification{}: {
+			&listeners.SendEmailVerificationNotification{},
+		},
 	}
 }

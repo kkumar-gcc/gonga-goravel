@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"github.com/goravel/framework/contracts/event"
+	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/facades"
 	"github.com/goravel/framework/support/carbon"
 	"goravel/app/events"
@@ -56,6 +57,32 @@ func CreateToken(user models.User) (string, error) {
 func DeleteExisting(user models.User) error {
 	var passwordReset models.PasswordReset
 	if _, err := facades.Orm().Query().Model(&models.PasswordReset{}).Where("email", user.Email).Delete(&passwordReset); err != nil {
+		return err
+	}
+	return nil
+}
+
+func PasswordReset(ctx http.Context) error {
+	token := ctx.Request().Input("token")
+	email := ctx.Request().Input("email")
+	var passwordReset models.PasswordReset
+	err := facades.Orm().Query().Model(&models.PasswordReset{}).Where("email", email).Where("token", token).First(&passwordReset)
+	if err != nil {
+		return err
+	}
+	password := ctx.Request().Input("password")
+	hashedPassword, err := facades.Hash().Make(password)
+	if err != nil {
+		return err
+	}
+	_, err = facades.Orm().Query().Where("email", email).Update(map[string]interface{}{
+		"password": hashedPassword,
+	})
+	if err != nil {
+		return err
+	}
+	_, err = facades.Orm().Query().Model(&models.PasswordReset{}).Where("email", email).Delete(&passwordReset)
+	if err != nil {
 		return err
 	}
 	return nil
