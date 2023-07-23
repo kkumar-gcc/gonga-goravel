@@ -37,6 +37,7 @@ func (r *RegisteredUserController) Store(ctx http.Context) {
 		ctx.Response().Json(http.StatusInternalServerError, http.Json{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	token, err := facades.Auth().Login(ctx, &user)
@@ -44,6 +45,7 @@ func (r *RegisteredUserController) Store(ctx http.Context) {
 		ctx.Response().Json(http.StatusInternalServerError, http.Json{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	ctx.Response().Header("Authorization", token).Status(http.StatusNoContent)

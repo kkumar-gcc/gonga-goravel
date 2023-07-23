@@ -31,10 +31,15 @@ type User struct {
 	WebsiteURL         string           `json:"website_url"`
 	Occupation         string           `json:"occupation"`
 	Education          string           `json:"education"`
-	EmailVerified      bool             `json:"email_verified"`
+	//EmailVerifiedAt    bool             `json:"email_verified_at"`
 	orm.SoftDeletes
 }
 
 func (u *User) Factory() factory.Factory {
 	return &factories.UserFactory{}
+}
+
+func (u *User) HasVerifiedEmail() bool {
+	//return u.EmailVerifiedAt
+	return false
 }

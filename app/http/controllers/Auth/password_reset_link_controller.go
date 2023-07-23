@@ -2,6 +2,7 @@ package Auth
 
 import (
 	"github.com/goravel/framework/contracts/http"
+	"goravel/app/helpers"
 )
 
 type PasswordResetLinkController struct {
@@ -27,9 +28,17 @@ func (r *PasswordResetLinkController) Store(ctx http.Context) {
 	}
 	if validator.Fails() {
 		ctx.Response().Json(http.StatusUnprocessableEntity, validator.Errors().All())
+		return
+	}
+	email := ctx.Request().Input("email")
+	if err := helpers.SendResetLinkEmail(email); err != nil {
+		ctx.Response().Json(http.StatusInternalServerError, http.Json{
+			"message": "Unable to send reset link",
+		})
+		return
 	}
 
-	//sendResetLinkEmail(ctx.Request().Query("email"))
-	//
-	//ctx.Response().Status(http.StatusNoContent)
+	ctx.Response().Json(http.StatusOK, http.Json{
+		"message": "Reset link sent",
+	})
 }

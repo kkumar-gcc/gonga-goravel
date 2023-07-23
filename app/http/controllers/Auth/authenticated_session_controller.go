@@ -59,6 +59,7 @@ func (r *AuthenticatedSessionController) Destroy(ctx http.Context) {
 		ctx.Response().Json(http.StatusInternalServerError, http.Json{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	ctx.Response().Status(http.StatusNoContent)
