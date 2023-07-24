@@ -55,7 +55,7 @@ func Web() {
 
 		// Comment routes starts with `/posts`
 		route.Get("/{id}/comments", commentController.Index)
-		route.Middleware(middleware.Auth()).Post("/{id}/comments", commentController.Create)
+		route.Middleware(middleware.Auth()).Post("/{id}/comments", commentController.Store)
 	})
 
 	// Like
