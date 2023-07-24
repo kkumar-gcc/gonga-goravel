@@ -19,6 +19,10 @@ func Web() {
 		})
 	})
 
+	// Media
+	mediaController := controllers.NewMediaController()
+	router.Middleware(middleware.Auth()).Post("/media/upload", mediaController.Store)
+
 	// User
 	userController := controllers.NewUserController()
 	followController := controllers.NewFollowController()
