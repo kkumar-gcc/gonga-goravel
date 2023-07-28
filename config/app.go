@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/goravel/cloudinary"
 	"github.com/goravel/framework/auth"
 	"github.com/goravel/framework/cache"
 	"github.com/goravel/framework/console"
@@ -94,6 +95,7 @@ func init() {
 			&providers.EventServiceProvider{},
 			&providers.ValidationServiceProvider{},
 			&providers.DatabaseServiceProvider{},
+			&cloudinary.ServiceProvider{},
 		},
 	})
 }
