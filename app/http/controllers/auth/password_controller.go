@@ -1,4 +1,4 @@
-package Auth
+package auth
 
 import (
 	"github.com/goravel/framework/contracts/http"
@@ -24,22 +24,19 @@ func (r *PasswordController) Store(ctx http.Context) {
 		"password": "required|min_len:8|eq_field:password_confirmation",
 	})
 	if err != nil {
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	if validator.Fails() {
-		ctx.Response().Json(http.StatusUnprocessableEntity, validator.Errors().All())
+		helpers.ErrorResponse(ctx, http.StatusUnprocessableEntity, validator.Errors().All())
 		return
 	}
 	if err := helpers.PasswordReset(ctx); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	if err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	ctx.Response().Json(http.StatusOK, http.Json{

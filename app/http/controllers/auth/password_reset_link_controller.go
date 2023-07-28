@@ -1,4 +1,4 @@
-package Auth
+package auth
 
 import (
 	"github.com/goravel/framework/contracts/http"
@@ -23,18 +23,16 @@ func (r *PasswordResetLinkController) Store(ctx http.Context) {
 		"email": "required|email",
 	})
 	if err != nil {
-
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	if validator.Fails() {
-		ctx.Response().Json(http.StatusUnprocessableEntity, validator.Errors().All())
+		helpers.ErrorResponse(ctx, http.StatusUnprocessableEntity, validator.Errors().All())
 		return
 	}
 	email := ctx.Request().Input("email")
 	if err := helpers.SendResetLinkEmail(email); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"message": "unable to send reset link",
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, "unable to send reset link")
 		return
 	}
 

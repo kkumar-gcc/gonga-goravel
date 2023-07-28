@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/facades"
+	"goravel/app/helpers"
 	"goravel/app/http/requests"
 	"goravel/app/models"
 )
@@ -24,9 +25,7 @@ func (r *UserController) Index(ctx http.Context) {
 	page := ctx.Request().QueryInt("page", 1)
 	perPage := ctx.Request().QueryInt("per_page", 10)
 	if err := facades.Orm().Query().Omit("password").Paginate(page, perPage, &users, &total); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	ctx.Response().Success().Json(http.Json{
@@ -44,9 +43,7 @@ func (r *UserController) Show(ctx http.Context) {
 	username := ctx.Request().Route("username")
 	var user models.User
 	if err := facades.Orm().Query().Where("username", username).Omit("password").FirstOrFail(&user); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	ctx.Response().Success().Json(http.Json{
@@ -59,14 +56,12 @@ func (r *UserController) Update(ctx http.Context) {
 	var updateUserRequest requests.UpdateUserRequest
 	errors, err := ctx.Request().ValidateRequest(&updateUserRequest)
 	if err != nil || errors != nil {
-		ctx.Response().Json(http.StatusUnprocessableEntity, errors.All())
+		helpers.ErrorResponse(ctx, http.StatusUnprocessableEntity, errors.All())
 		return
 	}
 	var user models.User
 	if err := facades.Orm().Query().Where("username", username).FirstOrFail(&user); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	if updateUserRequest.FirstName != "" {
@@ -112,9 +107,7 @@ func (r *UserController) Update(ctx http.Context) {
 		user.Education = updateUserRequest.Education
 	}
 	if err := facades.Orm().Query().Model(&models.User{}).Save(&user); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	ctx.Response().Success().Json(http.Json{
@@ -126,15 +119,11 @@ func (r *UserController) Delete(ctx http.Context) {
 	id := ctx.Request().Route("id")
 	var user models.User
 	if err := facades.Orm().Query().Where("id", id).FirstOrFail(&user); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	if _, err := facades.Orm().Query().Model(&models.User{}).Delete(&user); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	ctx.Response().Success().Json(http.Json{

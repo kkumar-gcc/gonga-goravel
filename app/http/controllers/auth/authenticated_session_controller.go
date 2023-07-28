@@ -1,8 +1,9 @@
-package Auth
+package auth
 
 import (
 	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/facades"
+	"goravel/app/helpers"
 	Auth2 "goravel/app/http/requests/Auth"
 	"goravel/app/models"
 )
@@ -24,30 +25,24 @@ func (r *AuthenticatedSessionController) Store(ctx http.Context) {
 	var loginRequest Auth2.LoginRequest
 	errors, err := ctx.Request().ValidateRequest(&loginRequest)
 	if err != nil || errors != nil {
-		ctx.Response().Json(http.StatusUnprocessableEntity, errors.All())
+		helpers.ErrorResponse(ctx, http.StatusUnprocessableEntity, errors.All())
 		return
 	}
 
 	var user models.User
 	if err := facades.Orm().Query().Where("username", loginRequest.Username).First(&user); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	if !facades.Hash().Check(loginRequest.Password, user.Password) {
-		ctx.Response().Json(http.StatusUnauthorized, http.Json{
-			"error": "Invalid credentials",
-		})
+		helpers.ErrorResponse(ctx, http.StatusUnauthorized, "Invalid credentials")
 		return
 	}
 
 	token, err := facades.Auth().Login(ctx, &user)
 	if err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -56,9 +51,7 @@ func (r *AuthenticatedSessionController) Store(ctx http.Context) {
 
 func (r *AuthenticatedSessionController) Destroy(ctx http.Context) {
 	if err := facades.Auth().Logout(ctx); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 

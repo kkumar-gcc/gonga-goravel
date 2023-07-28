@@ -4,9 +4,9 @@ import (
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
-	"github.com/gookit/color"
 	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/facades"
+	"goravel/app/helpers"
 	"goravel/app/http/requests"
 	"goravel/app/models"
 )
@@ -27,8 +27,7 @@ func (r *MediaController) Store(ctx http.Context) {
 	var storeMediaRequest requests.StoreMediaRequest
 	errors, err := ctx.Request().ValidateRequest(&storeMediaRequest)
 	if err != nil || errors != nil {
-		color.Redln("MediaController.Store", err, errors)
-		ctx.Response().Json(http.StatusUnprocessableEntity, errors.All())
+		helpers.ErrorResponse(ctx, http.StatusUnprocessableEntity, errors.All())
 		return
 	}
 	files := storeMediaRequest.Files
@@ -42,9 +41,7 @@ func (r *MediaController) Store(ctx http.Context) {
 	for _, fileHeader := range files {
 		file, err := fileHeader.Open()
 		if err != nil {
-			ctx.Response().Json(http.StatusInternalServerError, http.Json{
-				"error": err.Error(),
-			})
+			helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 			return
 		}
 
@@ -60,6 +57,7 @@ func (r *MediaController) Store(ctx http.Context) {
 		}
 		// Close the file explicitly here, after the upload is done or in case of an error
 		if err := file.Close(); err != nil {
+			helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 			return
 		}
 		// Create media
@@ -70,9 +68,7 @@ func (r *MediaController) Store(ctx http.Context) {
 			Type:      upload.Type,
 		}
 		if err := facades.Orm().Query().Create(&media); err != nil {
-			ctx.Response().Json(http.StatusInternalServerError, http.Json{
-				"error": err.Error(),
-			})
+			helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 			return
 		}
 
