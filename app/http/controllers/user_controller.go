@@ -64,6 +64,13 @@ func (r *UserController) Update(ctx http.Context) {
 		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
+	response := facades.Gate().Inspect("update-post", map[string]any{
+		"user": user,
+	})
+	if !response.Allowed() {
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, response.Message())
+		return
+	}
 	if updateUserRequest.FirstName != "" {
 		user.FirstName = updateUserRequest.FirstName
 	}
@@ -120,6 +127,13 @@ func (r *UserController) Delete(ctx http.Context) {
 	var user models.User
 	if err := facades.Orm().Query().Where("id", id).FirstOrFail(&user); err != nil {
 		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
+	response := facades.Gate().Inspect("delete-user", map[string]any{
+		"user": user,
+	})
+	if !response.Allowed() {
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, response.Message())
 		return
 	}
 	if _, err := facades.Orm().Query().Model(&models.User{}).Delete(&user); err != nil {

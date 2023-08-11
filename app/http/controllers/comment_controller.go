@@ -113,6 +113,13 @@ func (r *CommentController) Update(ctx http.Context) {
 		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
+	response := facades.Gate().Inspect("update-comment", map[string]any{
+		"comment": comment,
+	})
+	if !response.Allowed() {
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, response.Message())
+		return
+	}
 	comment.Body = updateCommentRequest.Body
 	if err := facades.Orm().Query().Save(&comment); err != nil {
 		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
@@ -130,6 +137,13 @@ func (r *CommentController) Delete(ctx http.Context) {
 	var comment models.Comment
 	if err := facades.Orm().Query().Where("id = ?", id).FirstOrFail(&comment); err != nil {
 		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
+	response := facades.Gate().Inspect("delete-comment", map[string]any{
+		"comment": comment,
+	})
+	if !response.Allowed() {
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, response.Message())
 		return
 	}
 	if _, err := facades.Orm().Query().Delete(&comment); err != nil {

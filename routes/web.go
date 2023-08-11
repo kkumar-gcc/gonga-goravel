@@ -52,7 +52,8 @@ func Web() {
 		// Comment routes starts with `/posts`
 		route.Get("/{id}/comments", commentController.Index)
 	})
-	// Authenticated post routes
+
+	// Authenticated post-routes
 	router.Prefix("posts").Middleware(middleware.Auth()).Group(func(route route.Route) {
 		route.Post("/", postController.Store)
 		route.Put("/{id}/title", postController.UpdateTitle)

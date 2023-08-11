@@ -17,13 +17,13 @@ func (s *UserSeeder) Signature() string {
 // Run executes the seeder logic.
 func (s *UserSeeder) Run() error {
 	var users []models.User
-	err := facades.Orm().Factory().Times(500).Create(&users)
+	err := facades.Orm().Factory().Count(500).Create(&users)
 	if err != nil {
 		return err
 	} // 500 users
 
 	var tags []models.Tag
-	if err := facades.Orm().Factory().Times(20).Make(&tags); err != nil {
+	if err := facades.Orm().Factory().Count(20).Make(&tags); err != nil {
 		return err
 	} // 20 tags
 	for i := range tags {
@@ -36,7 +36,7 @@ func (s *UserSeeder) Run() error {
 
 	for _, user := range users {
 		var posts []models.Post
-		err := facades.Orm().Factory().Times(rand.Intn(4)).Make(&posts)
+		err := facades.Orm().Factory().Count(rand.Intn(4)).Make(&posts)
 		if err != nil {
 			return err
 		} // max 4 posts
@@ -48,7 +48,7 @@ func (s *UserSeeder) Run() error {
 			}
 
 			var comments []models.Comment
-			err := facades.Orm().Factory().Times(rand.Intn(5)).Make(&comments)
+			err := facades.Orm().Factory().Count(rand.Intn(5)).Make(&comments)
 			if err != nil {
 				return err
 			} // max 5 comments
