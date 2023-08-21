@@ -1,6 +1,8 @@
 package config
 
 import (
+	cloudinaryFacades "github.com/goravel/cloudinary/facades"
+	"github.com/goravel/framework/contracts/filesystem"
 	"github.com/goravel/framework/facades"
 )
 
@@ -26,6 +28,15 @@ func init() {
 				"driver": "local",
 				"root":   "storage/app",
 				"url":    config.Env("APP_URL", "").(string) + "/storage",
+			},
+			"cloudinary": map[string]any{
+				"driver": "custom",
+				"cloud":  config.Env("CLOUDINARY_CLOUD_NAME", ""),
+				"key":    config.Env("CLOUDINARY_API_KEY", ""),
+				"secret": config.Env("CLOUDINARY_API_SECRET", ""),
+				"via": func() (filesystem.Driver, error) {
+					return cloudinaryFacades.Cloudinary("cloudinary"), nil
+				},
 			},
 		},
 	})

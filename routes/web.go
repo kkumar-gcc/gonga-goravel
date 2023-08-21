@@ -19,6 +19,10 @@ func Web() {
 		})
 	})
 
+	// Media
+	mediaController := controllers.NewMediaController()
+	router.Middleware(middleware.Auth()).Post("/media/upload", mediaController.Store)
+
 	// User
 	userController := controllers.NewUserController()
 	followController := controllers.NewFollowController()
@@ -45,17 +49,21 @@ func Web() {
 	router.Prefix("posts").Group(func(route route.Route) {
 		route.Get("/", postController.Index)
 		route.Get("/{id}", postController.Show)
-		route.Middleware(middleware.Auth()).Post("/", postController.Store)
-		route.Middleware(middleware.Auth()).Put("/{id}/title", postController.UpdateTitle)
-		route.Middleware(middleware.Auth()).Put("/{id}/body", postController.UpdateBody)
-		route.Middleware(middleware.Auth()).Put("/{id}/medias", postController.UpdateMedia)
-		route.Middleware(middleware.Auth()).Put("/{id}/hashtags", postController.UpdateHashtag)
-		route.Middleware(middleware.Auth()).Put("/{id}/settings", postController.UpdatePostSettings)
-		route.Middleware(middleware.Auth()).Delete("/{id}", postController.Delete)
-
 		// Comment routes starts with `/posts`
 		route.Get("/{id}/comments", commentController.Index)
-		route.Middleware(middleware.Auth()).Post("/{id}/comments", commentController.Create)
+	})
+
+	// Authenticated post-routes
+	router.Prefix("posts").Middleware(middleware.Auth()).Group(func(route route.Route) {
+		route.Post("/", postController.Store)
+		route.Put("/{id}/title", postController.UpdateTitle)
+		route.Put("/{id}/body", postController.UpdateBody)
+		route.Put("/{id}/medias", postController.UpdateMedia)
+		route.Put("/{id}/hashtags", postController.UpdateHashtag)
+		route.Put("/{id}/settings", postController.UpdatePostSettings)
+		route.Delete("/{id}", postController.Delete)
+		// Comment routes starts with `/posts`
+		router.Post("/{id}/comments", commentController.Store)
 	})
 
 	// Like
@@ -84,6 +92,6 @@ func Web() {
 		handler(ctx.Response().Writer(), ctx.Request().Origin())
 	})
 
-	// Auth Routes
+	// auth Routes
 	Auth()
 }

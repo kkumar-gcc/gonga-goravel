@@ -1,4 +1,4 @@
-package Auth
+package auth
 
 import (
 	"github.com/goravel/framework/contracts/http"
@@ -21,9 +21,7 @@ func (r *VerifyEmailController) Index(ctx http.Context) {
 	var user models.User
 	err := facades.Auth().User(ctx, &user) // Must point
 	if err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	url := facades.Config().GetString("app.frontend_url")
@@ -33,9 +31,7 @@ func (r *VerifyEmailController) Index(ctx http.Context) {
 	}
 
 	if err := helpers.MarkEmailAsVerified(user); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 

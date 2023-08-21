@@ -1,4 +1,4 @@
-package Auth
+package auth
 
 import (
 	"github.com/goravel/framework/contracts/http"
@@ -24,6 +24,7 @@ func (r *EmailVerificationNotificationController) Store(ctx http.Context) {
 	var user models.User
 	err := facades.Auth().User(ctx, &user) // Must point
 	if err != nil {
+		helpers.ErrorResponse(ctx, http.StatusUnauthorized, err.Error())
 		return
 	}
 	if user.HasVerifiedEmail() {
@@ -33,9 +34,7 @@ func (r *EmailVerificationNotificationController) Store(ctx http.Context) {
 	}
 
 	if err := helpers.SendEmailVerificationLink(ctx); err != nil {
-		ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"error": err.Error(),
-		})
+		helpers.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	ctx.Response().Json(http.StatusNoContent, http.Json{
